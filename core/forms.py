@@ -28,9 +28,14 @@ class UsuarioRegistroForm(UserCreationForm):
 class AlimentoForm(forms.ModelForm):
     class Meta:
         model = Alimento
-        fields = ['nome', 'calorias'] # <--- Deixamos apenas o que você quer
+        # Adicione 'proteinas', 'carboidratos', 'gorduras' na lista abaixo
+        fields = ['nome', 'calorias', 'proteinas', 'carboidratos', 'gorduras']
         
+        # Labels para ficarem bonitos na tela
         labels = {
             'nome': 'Nome do Alimento',
             'calorias': 'Calorias (kcal)',
+            'proteinas': 'Proteínas (g)',
+            'carboidratos': 'Carboidratos (g)',
+            'gorduras': 'Gorduras (g)',
         }
