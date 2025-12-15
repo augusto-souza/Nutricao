@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
+from django.db.models import Sum
 from .forms import UsuarioRegistroForm, AlimentoForm
 from .models import Alimento
+
 
 # 1. Cadastro de Usuário
 def registro(request):
@@ -20,7 +22,20 @@ def registro(request):
 @login_required
 def dashboard(request):
     alimentos = Alimento.objects.filter(usuario=request.user) # Filtra apenas do usuário atual
-    return render(request, 'dashboard.html', {'alimentos': alimentos})
+    total_calorias = alimentos.aggregate(Sum('calorias'))['calorias__sum'] or 0
+    total_proteinas = alimentos.aggregate(Sum('proteinas'))['proteinas__sum'] or 0
+    total_carboidratos = alimentos.aggregate(Sum('carboidratos'))['carboidratos__sum'] or 0
+    total_gorduras = alimentos.aggregate(Sum('gorduras'))['gorduras__sum'] or 0
+
+    contexto = {
+        'alimentos': alimentos,
+        'total_calorias': total_calorias,
+        'total_proteinas': total_proteinas,
+        'total_carboidratos': total_carboidratos,
+        'total_gorduras': total_gorduras,
+    }
+
+    return render(request, 'dashboard.html', contexto)
 
 # 3. Adicionar Alimento
 @login_required
