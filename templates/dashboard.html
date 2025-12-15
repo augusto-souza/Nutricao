@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Minha Dieta</h2>
+<ul>
+    {% for alimento in alimentos %}
+        <li>
+            <strong>{{ alimento.nome }}</strong> - 
+            {{ alimento.calorias }} Kcal 
+            ({{ alimento.proteinas }}g Prot, {{ alimento.carboidratos }}g Carb)
+        </li>
+    {% empty %}
+        <li>Nenhum alimento cadastrado ainda.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
