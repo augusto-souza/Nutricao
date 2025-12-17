@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NutriCare System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
     <style>
         body { background-color: #f8f9fa; }
         .card-custom { box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: none; }
@@ -15,27 +17,40 @@
         <div class="container">
             <a class="navbar-brand" href="{% url 'dashboard' %}">🥗 NutriCare</a>
             
-            <div class="d-flex">
-                {% if user.is_authenticated %}
-                    <span class="navbar-text text-white me-3">Olá, {{ user.username }}</span>
-                    
-                    {% if is_nutricionista %}
-                        <a href="{% url 'adicionar_alimento' %}" class="btn btn-light btn-sm me-2">Add Alimento</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <div class="d-flex align-items-center">
+                    {% if user.is_authenticated %}
+                        <span class="navbar-text text-white me-3">
+                            <i class="bi bi-person-circle"></i> Olá, {{ user.first_name|default:user.username }}
+                        </span>
+                        
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light btn-sm">Sair</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-light btn-sm me-2">Entrar</a>
+                        <a href="{% url 'registro' %}" class="btn btn-outline-light btn-sm">Cadastrar</a>
                     {% endif %}
-                    
-                    <form action="{% url 'logout' %}" method="post" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-light btn-sm">Sair</button>
-                    </form>
-                {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-light btn-sm me-2">Entrar</a>
-                    <a href="{% url 'registro' %}" class="btn btn-outline-light btn-sm">Cadastrar</a>
-                {% endif %}
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </div>

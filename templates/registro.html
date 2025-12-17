@@ -29,9 +29,7 @@
                                 </div>
                             
                             {% else %}
-                                <div class="input-group">
-                                    {{ field }} 
-                                </div>
+                                {{ field }} 
                             {% endif %}
 
                             {% if field.errors %}
@@ -41,7 +39,9 @@
                             {% endif %}
                             
                             {% if field.help_text %}
-                                <div class="form-text text-muted small">{{ field.help_text }}</div>
+                                <div class="form-text text-muted small mt-1">
+                                    {{ field.help_text|safe }}
+                                </div>
                             {% endif %}
                         </div>
                     {% endfor %}
@@ -61,10 +61,16 @@
 </div>
 
 <script>
-    // Este script adiciona a classe 'form-control' aos inputs do Django automaticamente
-    // para que eles fiquem bonitos sem precisar mexer no Python
+    // Adiciona classe form-control do Bootstrap aos inputs automaticamente
     document.querySelectorAll('input:not([type="radio"]):not([type="checkbox"])').forEach(input => {
         input.classList.add('form-control');
+    });
+    
+    // Ajusta o estilo da lista de ajuda de senha do Django (ul/li) para ficar bonita
+    var helpTexts = document.querySelectorAll('.form-text ul');
+    helpTexts.forEach(ul => {
+        ul.classList.add('list-unstyled', 'mb-0');
+        ul.style.paddingLeft = '0';
     });
 </script>
 {% endblock %}
