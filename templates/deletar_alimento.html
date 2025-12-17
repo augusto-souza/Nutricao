@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card card-custom border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Confirmar Exclusão</h4>
+            </div>
+            <div class="card-body text-center">
+                <h5 class="card-title mt-3">Você tem certeza que deseja excluir?</h5>
+                <p class="display-6 my-4">{{ alimento.nome }}</p>
+                <p class="text-muted">Essa ação não pode ser desfeita.</p>
+
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-block">
+                        <button type="submit" class="btn btn-danger btn-lg px-5">Sim, Excluir</button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-lg px-5">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

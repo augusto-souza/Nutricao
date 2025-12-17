@@ -54,8 +54,9 @@
                     <th>Carb (g)</th>
                     <th>Gord (g)</th>
                     <th>Data</th>
-                </tr>
+                    <th>Ações</th> </tr>
             </thead>
+            
             <tbody>
                 {% for alimento in alimentos %}
                 <tr>
@@ -65,10 +66,19 @@
                     <td>{{ alimento.carboidratos }}</td>
                     <td>{{ alimento.gorduras }}</td>
                     <td>{{ alimento.data_consumo|date:"d/m/Y" }}</td>
+                    
+                    <td>
+                        <a href="{% url 'editar_alimento' alimento.id %}" class="btn btn-sm btn-warning" title="Editar">
+                            Editar
+                        </a>
+                        <a href="{% url 'deletar_alimento' alimento.id %}" class="btn btn-sm btn-danger" title="Excluir">
+                            Excluir
+                        </a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center text-muted">Nenhum alimento registrado ainda.</td>
+                    <td colspan="7" class="text-center text-muted">Nenhum alimento registrado ainda.</td>
                 </tr>
                 {% endfor %}
             </tbody>

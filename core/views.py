@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
@@ -73,3 +73,34 @@ def adicionar_alimento(request):
     else:
         form = AlimentoForm()
     return render(request, 'adicionar_alimento.html', {'form': form})
+
+@login_required
+def editar_alimento(request, id):
+    # Busca o alimento pelo ID, mas SÓ se pertencer ao usuário logado (Segurança!)
+    alimento = get_object_or_404(Alimento, id=id, usuario=request.user)
+
+    if request.method == 'POST':
+        # Carrega o formulário com os dados do banco (instance=alimento)
+        form = AlimentoForm(request.POST, instance=alimento)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        # Se for GET, mostra o formulário preenchido
+        form = AlimentoForm(instance=alimento)
+
+    return render(request, 'editar_alimento.html', {'form': form, 'alimento': alimento})
+
+# --- DELETAR ALIMENTO (DELETE) ---
+@login_required
+def deletar_alimento(request, id):
+    # Busca o alimento com segurança
+    alimento = get_object_or_404(Alimento, id=id, usuario=request.user)
+
+    if request.method == 'POST':
+        # Se confirmou a exclusão
+        alimento.delete()
+        return redirect('dashboard')
+
+    # Se for GET, mostra a página de confirmação ("Tem certeza?")
+    return render(request, 'deletar_alimento.html', {'alimento': alimento})

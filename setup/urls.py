@@ -5,12 +5,16 @@ from core import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # Rotas de Autenticação
+    # Autenticação
     path('registro/', views.registro, name='registro'),
-    path('login/', views.login_view, name='login'),      # <-- Atenção aqui: login_view
-    path('logout/', views.logout_view, name='logout'),   # <-- Atenção aqui: logout_view
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 
-    # Rotas do Sistema
+    # Sistema Principal
     path('', views.dashboard, name='dashboard'),
     path('adicionar/', views.adicionar_alimento, name='adicionar_alimento'),
+    
+    # --- NOVAS ROTAS (CRUD) ---
+    path('editar/<int:id>/', views.editar_alimento, name='editar_alimento'),
+    path('deletar/<int:id>/', views.deletar_alimento, name='deletar_alimento'),
 ]
