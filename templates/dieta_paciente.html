@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row mb-4">
-    <div class="col-md-12">
-        <h2>Olá, {{ user.first_name|default:user.username }}!</h2>
-        <p class="text-muted">Acompanhe abaixo o resumo da sua dieta definida pelo nutricionista.</p>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-0">Plano Alimentar</h2>
+        <p class="text-muted">Paciente: <strong>{{ paciente.first_name }} {{ paciente.last_name }}</strong> ({{ paciente.username }})</p>
+    </div>
+    
+    <div>
+        <a href="{% url 'lista_pacientes' %}" class="btn btn-outline-secondary me-2">
+            <i class="bi bi-arrow-left"></i> Voltar para Lista
+        </a>
+        <a href="{% url 'adicionar_alimento_paciente' paciente.id %}" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> Adicionar Alimento
+        </a>
     </div>
 </div>
 
@@ -89,7 +99,7 @@
                     {% empty %}
                     <tr>
                         <td colspan="{% if is_nutricionista %}7{% else %}6{% endif %}" class="text-center text-muted py-4">
-                            Nenhum alimento registrado na sua dieta ainda.
+                            Nenhum alimento registrado para este paciente ainda.
                         </td>
                     </tr>
                     {% endfor %}

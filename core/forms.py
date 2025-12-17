@@ -7,23 +7,26 @@ from django.utils.translation import gettext_lazy as _
 
 # Formulário de Cadastro de Usuário Personalizado
 class UsuarioRegistroForm(UserCreationForm):
-    # Traduzindo o campo email e first_name
-    email = forms.EmailField(required=True, label=_('E-mail'))
-    first_name = forms.CharField(max_length=30, required=True, label=_('Nome'))
+    # Adicionamos campos extras
+    email = forms.EmailField(required=True, label="E-mail")
+    first_name = forms.CharField(required=True, label="Nome")
+    last_name = forms.CharField(required=True, label="Sobrenome")
 
-    class Meta:
+    # CAMPO NOVO: Escolha de tipo
+    TIPOS_USUARIO = (
+        ('Paciente', 'Sou Paciente'),
+        ('Nutricionista', 'Sou Nutricionista'),
+    )
+    tipo_usuario = forms.ChoiceField(
+        choices=TIPOS_USUARIO,
+        widget=forms.RadioSelect, # Cria bolinhas de seleção. Use forms.Select para lista suspensa.
+        label="Tipo de Conta"
+    )
+
+    class Meta(UserCreationForm.Meta):
         model = User
-        # Os campos 'username' e 'password' são traduzidos pelo próprio Django
-        fields = ['username', 'email', 'first_name']
-        
-        # Traduzindo o help text do username
-        help_texts = {
-            'username': _('Obrigatório. 150 caracteres ou menos. Apenas letras, dígitos e @/./+/-/_.'),
-        }
-        # Traduzindo a label do username
-        labels = {
-            'username': _('Nome de Usuário'),
-        }
+        # Adicione os campos que você quer que apareçam no formulário
+        fields = ('username', 'first_name', 'last_name', 'email')
 
 class AlimentoForm(forms.ModelForm):
     class Meta:

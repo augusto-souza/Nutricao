@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Meus Pacientes</h2>
+<div class="card card-custom">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for paciente in pacientes %}
+                <tr>
+                    <td>{{ paciente.first_name }} {{ paciente.last_name }} ({{ paciente.username }})</td>
+                    <td>{{ paciente.email }}</td>
+                    <td>
+                        <a href="{% url 'dieta_paciente' paciente.id %}" class="btn btn-primary btn-sm">
+                            Gerenciar Dieta
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">Nenhum paciente encontrado.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
